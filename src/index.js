@@ -37,8 +37,38 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+const WHITESPACE_CODE = '**********';
+
 function decode(expr) {
-    // write your solution here
+   let wordsCode = expr.split(WHITESPACE_CODE);
+   let words = [];
+
+   wordsCode.forEach(element => {        
+        let codedWords = element.match(/.{1,10}/g);
+        
+        codedWords.forEach(codedLetter => {
+            let morseRes = ''; 
+            let searchLetters = codedLetter.match(/.{1,2}/g);
+
+            searchLetters.forEach(sig => {
+               if(sig === '10'){
+                   morseRes += '.';
+               }
+               else if(sig === '11') {
+                   morseRes += '-';
+               }
+            });
+            
+            let morseLetter = Object.keys(MORSE_TABLE).find(o => o === morseRes);
+            let letter = MORSE_TABLE[morseLetter];
+            if(letter) words += letter;
+
+        });
+        words+=" ";
+   });
+    
+   return words.trim();  
+
 }
 
 module.exports = {
